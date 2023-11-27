@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import "./WunderTokenV1.sol";
+import {WunderTokenV1} from "./WunderTokenV1.sol";
 
 contract WunderTokenV2 is WunderTokenV1 {
   uint256 private value;

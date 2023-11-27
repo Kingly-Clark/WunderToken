@@ -17,7 +17,7 @@ export const deployWunderTokenV1 = async () => {
   )
   await wunderTokenV1Proxy.waitForDeployment()
   const wunderTokenV1ProxyAddress = await wunderTokenV1Proxy.getAddress()
-  const wunderTokenV1:WunderTokenV1 = await ethers.getContractAt(
+  const wunderTokenV1: WunderTokenV1 = await ethers.getContractAt(
     "WunderTokenV1",
     wunderTokenV1ProxyAddress,
   )
