@@ -21,9 +21,9 @@ contract WunderTokenV1 is
   /** ================================================================== */
   mapping(address => bool) private _frozen;
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+  bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
   bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
   bytes32 public constant GOVERN_ROLE = keccak256("GOVERN_ROLE");
-  bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
   bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
   /** =================================================================== */
@@ -64,18 +64,60 @@ contract WunderTokenV1 is
   /** =========================== Modifiers ============================= */
   /** =================================================================== */
   modifier whenNotFrozen(address account) {
-    require(!_frozen[account], "Wunder: Account is frozen");
+    if (_frozen[account]) {
+      revert WunderTokenAccountFrozen(account);
+    }
     _;
   }
 
   modifier whenFrozen(address account) {
-    require(_frozen[account], "Wunder: Account is not frozen");
+    if (!_frozen[account]) {
+      revert WunderTokenAccountNotFrozen(account);
+    }
     _;
   }
 
   function isFrozen(address account) public view returns (bool) {
     return _frozen[account];
   }
+
+  /** =================================================================== */
+  /** ============================= Errors ============================== */
+  /** =================================================================== */
+  /**
+   * @dev The `account` is frozen.
+   */
+  error WunderTokenAccountFrozen(address account);
+
+  /**
+   * @dev The `account` is not frozen.
+   */
+  error WunderTokenAccountNotFrozen(address account);
+
+  /**
+   * @dev The `account` is not allowed.
+   */
+  error WunderTokenAccountNotAllowed(address account);
+
+  /**
+   * @dev The `account` has zero balance
+   */
+  error WunderTokenAccountZeroBalance(address account);
+
+  /**
+   * @dev Array length mismatch
+   */
+  error WunderTokenArrayLengthMismatch();
+
+  /**
+   * @dev Array length too long
+   */
+  error WunderTokenArrayLengthTooLong();
+
+  /**
+   * @dev Insufficient funds
+   */
+  error WunderTokenInsufficientFunds(address account);
 
   /** =================================================================== */
   /** =========================== Functions ============================= */
@@ -222,23 +264,29 @@ contract WunderTokenV1 is
     whenFrozen(account)
     returns (bool)
   {
-    require(account != address(this), "Wunder: cannot clean to self");
-    require(balanceOf(account) > 0, "Wunder: cannot clean empty account");
+    if (account == address(this)) {
+      revert WunderTokenAccountNotAllowed(account);
+    }
+    if (balanceOf(account) <= 0) {
+      revert WunderTokenAccountZeroBalance(account);
+    }
     uint256 balance = balanceOf(account);
+    unfreeze(account);
     _transfer(account, address(this), balance);
+    freeze(account);
     emit AddressSeized(account);
     return true;
   }
 
   /**
-   * @dev Withdraws a specific amount of ZARS from this contract.
+   * @dev Withdraws a specific amount of Wunder from this contract.
    *
-   * @param amount The amount of ZARS to withdraw to the sender.
+   * @param amount The amount of Wunder to withdraw to the sender.
    *
    * Requirements:
    *
    * - contract must not be paused.
-   * - contract must have enough ZARS to withdraw.
+   * - contract must have enough Wunder to withdraw.
    * - caller must have the `GOVERN_ROLE`.
    *
    * Emits FundsWithdrew event.
@@ -246,7 +294,9 @@ contract WunderTokenV1 is
   function withdraw(
     uint256 amount
   ) public onlyRole(GOVERN_ROLE) returns (bool) {
-    require(amount <= balanceOf(address(this)), "Wunder: not enough funds");
+    if (amount > balanceOf(address(this))) {
+      revert WunderTokenInsufficientFunds(_msgSender());
+    }
     _transfer(address(this), _msgSender(), amount);
     emit FundsWithdrew(_msgSender(), amount);
     return true;
@@ -278,15 +328,13 @@ contract WunderTokenV1 is
     address[] memory recipients,
     uint256[] memory amounts
   ) external whenNotPaused onlyRole(MINTER_ROLE) {
-    require(
-      recipients.length == amounts.length,
-      "Wunder: batchMint length mismatch"
-    );
+    if (recipients.length != amounts.length) {
+      revert WunderTokenArrayLengthMismatch();
+    }
 
-    require(
-      recipients.length <= 256,
-      "Wunder: recipients and amounts length must be less than 256"
-    );
+    if (recipients.length > 256) {
+      revert WunderTokenArrayLengthTooLong();
+    }
 
     for (uint256 i = 0; i < recipients.length; i++) {
       _mint(recipients[i], amounts[i]);

@@ -5,11 +5,7 @@ import "@nomicfoundation/hardhat-chai-matchers";
 import { Contract, Signer } from "ethers"
 import { deployWunderTokenV1 } from "./utils/deployments";
 
-const wunderToEth = (wunder: string) => ethers.utils.parseEther(wunder);
-
 describe("WunderToken", () => {
-
-
   describe("Deployment", () => {
     it("Should be able to deploy", async () => {
       const { wunderTokenV1 } = await loadFixture(deployWunderTokenV1);
@@ -46,6 +42,12 @@ describe("WunderToken", () => {
       const { wunderTokenV1, owner } = await loadFixture(deployWunderTokenV1);
 
       expect(await wunderTokenV1.hasRole(await wunderTokenV1.GOVERN_ROLE(), owner.address)).to.be.false;
+    });
+
+    it("Should not have granted owner UPGRADER_ROLE to deployer (owner)", async () => {
+      const { wunderTokenV1, owner } = await loadFixture(deployWunderTokenV1);
+
+      expect(await wunderTokenV1.hasRole(await wunderTokenV1.UPGRADER_ROLE(), owner.address)).to.be.false;
     });
   });
 
