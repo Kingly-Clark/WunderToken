@@ -1,9 +1,12 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
-import { expect } from "chai"
-import { ethers, upgrades } from "hardhat"
+import * as chai from "chai"
 import "@nomicfoundation/hardhat-chai-matchers"
-import { Contract, Signer } from "ethers"
 import { deployWunderTokenV1 } from "./utils/deployments"
+
+const dirtyChai = require("dirty-chai")
+
+chai.use(dirtyChai)
+const expect = chai.expect
 
 describe("WunderToken", () => {
   describe("Deployment", () => {
@@ -22,7 +25,7 @@ describe("WunderToken", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
     })
 
     it("Should not have granted owner MINTER_ROLE to deployer (owner)", async () => {
@@ -33,7 +36,7 @@ describe("WunderToken", () => {
           await wunderTokenV1.MINTER_ROLE(),
           owner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should not have granted owner PAUSER_ROLE to deployer (owner)", async () => {
@@ -44,7 +47,7 @@ describe("WunderToken", () => {
           await wunderTokenV1.PAUSER_ROLE(),
           owner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should not have granted owner BURNER_ROLE to deployer (owner)", async () => {
@@ -55,7 +58,7 @@ describe("WunderToken", () => {
           await wunderTokenV1.BURNER_ROLE(),
           owner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should not have granted owner GOVERN_ROLE to deployer (owner)", async () => {
@@ -66,7 +69,7 @@ describe("WunderToken", () => {
           await wunderTokenV1.GOVERN_ROLE(),
           owner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should not have granted owner UPGRADER_ROLE to deployer (owner)", async () => {
@@ -77,7 +80,7 @@ describe("WunderToken", () => {
           await wunderTokenV1.UPGRADER_ROLE(),
           owner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
   })
 })

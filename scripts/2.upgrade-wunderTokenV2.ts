@@ -19,7 +19,6 @@ async function main() {
 
   const wunderImplementationAddress =
     await upgrades.erc1967.getImplementationAddress(proxyAddress)
-  const wunderAdminAdress = await upgrades.erc1967.getAdminAddress(proxyAddress)
 
   console.log(`WunderTokenV2 proxy deployed to: ${proxyAddress}`)
   console.log(

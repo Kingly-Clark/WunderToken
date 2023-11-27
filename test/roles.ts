@@ -1,8 +1,12 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
-import { expect } from "chai"
 import "@nomicfoundation/hardhat-chai-matchers"
 import { deployWunderTokenV1 } from "./utils/deployments"
+import * as chai from "chai"
 
+const dirtyChai = require("dirty-chai")
+
+chai.use(dirtyChai)
+const expect = chai.expect
 describe("Roles", () => {
   describe("Granting", () => {
     it("Should be able to grant MINTER_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -14,7 +18,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have MINTER_ROLE
       expect(
@@ -22,7 +26,7 @@ describe("Roles", () => {
           await wunderTokenV1.MINTER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant MINTER_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -36,7 +40,7 @@ describe("Roles", () => {
           await wunderTokenV1.MINTER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
     })
 
     it("Should be able to grant BURNER_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -48,7 +52,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have BURNER_ROLE
       expect(
@@ -56,7 +60,7 @@ describe("Roles", () => {
           await wunderTokenV1.BURNER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant BURNER_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -70,7 +74,7 @@ describe("Roles", () => {
           await wunderTokenV1.BURNER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
     })
 
     it("Should be able to grant GOVERN_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -82,7 +86,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have GOVERN_ROLE
       expect(
@@ -90,7 +94,7 @@ describe("Roles", () => {
           await wunderTokenV1.GOVERN_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant GOVERN_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -104,7 +108,7 @@ describe("Roles", () => {
           await wunderTokenV1.GOVERN_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
     })
 
     it("Should be able to grant PAUSER_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -116,7 +120,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have PAUSER_ROLE
       expect(
@@ -124,7 +128,7 @@ describe("Roles", () => {
           await wunderTokenV1.PAUSER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant PAUSER_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -138,7 +142,7 @@ describe("Roles", () => {
           await wunderTokenV1.PAUSER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
     })
   })
 
@@ -152,7 +156,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have MINTER_ROLE
       expect(
@@ -160,7 +164,7 @@ describe("Roles", () => {
           await wunderTokenV1.MINTER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant MINTER_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -174,7 +178,7 @@ describe("Roles", () => {
           await wunderTokenV1.MINTER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // revoke MINTER_ROLE from notOwner
       await wunderTokenV1.revokeRole(
@@ -188,7 +192,7 @@ describe("Roles", () => {
           await wunderTokenV1.MINTER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should be able to revoke BURNER_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -200,7 +204,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have BURNER_ROLE
       expect(
@@ -208,7 +212,7 @@ describe("Roles", () => {
           await wunderTokenV1.BURNER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant BURNER_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -222,7 +226,7 @@ describe("Roles", () => {
           await wunderTokenV1.BURNER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // revoke BURNER_ROLE from notOwner
       await wunderTokenV1.revokeRole(
@@ -236,7 +240,7 @@ describe("Roles", () => {
           await wunderTokenV1.BURNER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should be able to revoke GOVERN_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -248,7 +252,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have GOVERN_ROLE
       expect(
@@ -256,7 +260,7 @@ describe("Roles", () => {
           await wunderTokenV1.GOVERN_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant GOVERN_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -270,7 +274,7 @@ describe("Roles", () => {
           await wunderTokenV1.GOVERN_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // revoke GOVERN_ROLE from notOwner
       await wunderTokenV1.revokeRole(
@@ -284,7 +288,7 @@ describe("Roles", () => {
           await wunderTokenV1.GOVERN_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
 
     it("Should be able to revoke PAUSER_ROLE as DEFAULT_ADMIN_ROLE", async () => {
@@ -296,7 +300,7 @@ describe("Roles", () => {
           await wunderTokenV1.DEFAULT_ADMIN_ROLE(),
           owner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // confirm notOwner doens't have PAUSER_ROLE
       expect(
@@ -304,7 +308,7 @@ describe("Roles", () => {
           await wunderTokenV1.PAUSER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
 
       // grant PAUSER_ROLE to notOwner
       await wunderTokenV1.grantRole(
@@ -318,7 +322,7 @@ describe("Roles", () => {
           await wunderTokenV1.PAUSER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.true
+      ).to.be.true()
 
       // revoke PAUSER_ROLE from notOwner
       await wunderTokenV1.revokeRole(
@@ -332,7 +336,7 @@ describe("Roles", () => {
           await wunderTokenV1.PAUSER_ROLE(),
           notOwner.address,
         ),
-      ).to.be.false
+      ).to.be.false()
     })
   })
 
@@ -347,7 +351,7 @@ describe("Roles", () => {
             await wunderTokenV1.MINTER_ROLE(),
             minter.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // grant MINTER_ROLE to minter
         await wunderTokenV1
@@ -360,7 +364,7 @@ describe("Roles", () => {
             await wunderTokenV1.MINTER_ROLE(),
             minter.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // mint 100 Wunder to minter
         await wunderTokenV1.connect(minter).mint(minter.address, 100)
@@ -377,7 +381,7 @@ describe("Roles", () => {
             await wunderTokenV1.MINTER_ROLE(),
             minter.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // mint 100 Wunder to minter
         await expect(
@@ -400,7 +404,7 @@ describe("Roles", () => {
             await wunderTokenV1.BURNER_ROLE(),
             burner.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // grant BURNER_ROLE to burner
         await wunderTokenV1
@@ -413,7 +417,7 @@ describe("Roles", () => {
             await wunderTokenV1.BURNER_ROLE(),
             burner.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         await wunderTokenV1
           .connect(owner)
@@ -441,7 +445,7 @@ describe("Roles", () => {
             await wunderTokenV1.BURNER_ROLE(),
             burner.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // burn 100 Wunder from burner
         await expect(
@@ -464,7 +468,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // grant GOVERN_ROLE to governor
         await wunderTokenV1
@@ -477,16 +481,16 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // confirm acc1 is not frozen
-        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false
+        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false()
 
         // freeze acc1
         await wunderTokenV1.connect(governor).freeze(acc1.address)
 
         // confirm acc1 is frozen
-        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.true
+        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.true()
       })
 
       it("Shouldn't be able to `freeze` an account as not GOVERN_ROLE", async () => {
@@ -498,7 +502,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // freeze acc1
         await expect(
@@ -519,7 +523,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // grant GOVERN_ROLE to governor
         await wunderTokenV1
@@ -532,22 +536,22 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // confirm acc1 is not frozen
-        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false
+        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false()
 
         // freeze acc1
         await wunderTokenV1.connect(governor).freeze(acc1.address)
 
         // confirm acc1 is frozen
-        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.true
+        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.true()
 
         // unfreeze acc1
         await wunderTokenV1.connect(governor).unfreeze(acc1.address)
 
         // confirm acc1 is not frozen
-        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false
+        expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false()
       })
 
       it("Shouldn't be able to `unfreeze` an account as not GOVERN_ROLE", async () => {
@@ -559,7 +563,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // unfreeze acc1
         await expect(
@@ -580,7 +584,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
         // grant GOVERN_ROLE to governor
         await wunderTokenV1
           .connect(owner)
@@ -591,7 +595,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // grant MINTER_ROLE to minter
         await wunderTokenV1
@@ -623,7 +627,7 @@ describe("Roles", () => {
       })
 
       it("Shouldn't be able to `seize` an account as not GOVERN_ROLE", async () => {
-        const { wunderTokenV1, governor, minter, acc1 } =
+        const { wunderTokenV1, governor, acc1 } =
           await loadFixture(deployWunderTokenV1)
         // confirm governor doens't have GOVERN_ROLE
         expect(
@@ -631,7 +635,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // seize acc1
         await expect(
@@ -652,7 +656,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
         // grant GOVERN_ROLE to governor
         await wunderTokenV1
           .connect(owner)
@@ -663,7 +667,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // grant MINTER_ROLE to minter
         await wunderTokenV1
@@ -711,7 +715,7 @@ describe("Roles", () => {
       })
 
       it("Shouldn't be able to `withdraw` Wunder as not GOVERN_ROLE", async () => {
-        const { wunderTokenV1, governor, minter, acc1 } =
+        const { wunderTokenV1, governor } =
           await loadFixture(deployWunderTokenV1)
         // confirm governor doens't have GOVERN_ROLE
         expect(
@@ -719,7 +723,7 @@ describe("Roles", () => {
             await wunderTokenV1.GOVERN_ROLE(),
             governor.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // withdraw 100 Wunder
         await expect(
@@ -742,7 +746,7 @@ describe("Roles", () => {
             await wunderTokenV1.PAUSER_ROLE(),
             pauser.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // grant PAUSER_ROLE to pauser
         await wunderTokenV1
@@ -755,16 +759,16 @@ describe("Roles", () => {
             await wunderTokenV1.PAUSER_ROLE(),
             pauser.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // confirm wunderTokenV1 is not paused
-        expect(await wunderTokenV1.paused()).to.be.false
+        expect(await wunderTokenV1.paused()).to.be.false()
 
         // pause wunderTokenV1
         await wunderTokenV1.connect(pauser).pause()
 
         // confirm wunderTokenV1 is paused
-        expect(await wunderTokenV1.paused()).to.be.true
+        expect(await wunderTokenV1.paused()).to.be.true()
       })
 
       it("Shouldn't be able to `pause` as not PAUSER_ROLE", async () => {
@@ -775,10 +779,10 @@ describe("Roles", () => {
             await wunderTokenV1.PAUSER_ROLE(),
             pauser.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // confirm wunderTokenV1 is not paused
-        expect(await wunderTokenV1.paused()).to.be.false
+        expect(await wunderTokenV1.paused()).to.be.false()
 
         // pause wunderTokenV1
         await expect(
@@ -799,7 +803,7 @@ describe("Roles", () => {
             await wunderTokenV1.PAUSER_ROLE(),
             pauser.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // grant PAUSER_ROLE to pauser
         await wunderTokenV1
@@ -812,22 +816,22 @@ describe("Roles", () => {
             await wunderTokenV1.PAUSER_ROLE(),
             pauser.address,
           ),
-        ).to.be.true
+        ).to.be.true()
 
         // confirm wunderTokenV1 is not paused
-        expect(await wunderTokenV1.paused()).to.be.false
+        expect(await wunderTokenV1.paused()).to.be.false()
 
         // pause wunderTokenV1
         await wunderTokenV1.connect(pauser).pause()
 
         // confirm wunderTokenV1 is paused
-        expect(await wunderTokenV1.paused()).to.be.true
+        expect(await wunderTokenV1.paused()).to.be.true()
 
         // unpause wunderTokenV1
         await wunderTokenV1.connect(pauser).unpause()
 
         // confirm wunderTokenV1 is not paused
-        expect(await wunderTokenV1.paused()).to.be.false
+        expect(await wunderTokenV1.paused()).to.be.false()
       })
 
       it("Shouldn't be able to `unpause` as not PAUSER_ROLE", async () => {
@@ -838,10 +842,10 @@ describe("Roles", () => {
             await wunderTokenV1.PAUSER_ROLE(),
             pauser.address,
           ),
-        ).to.be.false
+        ).to.be.false()
 
         // confirm wunderTokenV1 is not paused
-        expect(await wunderTokenV1.paused()).to.be.false
+        expect(await wunderTokenV1.paused()).to.be.false()
 
         // unpause wunderTokenV1
         await expect(
