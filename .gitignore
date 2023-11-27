@@ -13,3 +13,7 @@ node_modules
 /coverage
 /coverage.json
 
+/.openzeppelin
+/build/contracts
+
+yarn-error.log

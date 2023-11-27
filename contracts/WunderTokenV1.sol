@@ -8,8 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-// using SafeERC20 for IERC20;
-contract WunderToken is
+contract WunderTokenV1 is
   Initializable,
   ERC20Upgradeable,
   ERC20BurnableUpgradeable,
@@ -52,7 +51,6 @@ contract WunderToken is
    */
   event FundsWithdrew(address indexed account, uint256 amount);
 
-
   /**
    * @dev Emitted when `amounts` tokens are minted to multiple `recipients`.
    */
@@ -89,7 +87,7 @@ contract WunderToken is
   }
 
   function initialize(address defaultAdmin) public initializer {
-    __ERC20_init("Wunder", "WUNDER");
+    __ERC20_init("Wunder Token", "WUNDER");
     __ERC20Burnable_init();
     __ERC20Pausable_init();
     __AccessControl_init();
