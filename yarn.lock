@@ -5322,6 +5322,11 @@ number-to-bn@1.7.0:
     bn.js "4.11.6"
     strip-hex-prefix "1.0.0"
 
+nyc-dark@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/nyc-dark/-/nyc-dark-3.0.3.tgz#fb7ab3ed7686e2f8a4fa021f0ab9b4b65c762347"
+  integrity sha512-jcb5VU7F9zrikF6BW+tPdTNEl7PRL1H4rwYqcqjAxLnVCH1nKqgSBngMv/D336SS/Dn2CNzM6JzN6NcGyDdbHA==
+
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"

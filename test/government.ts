@@ -1,7 +1,9 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 import "@nomicfoundation/hardhat-chai-matchers"
+// eslint-disable-next-line node/no-missing-import
 import { deployFullWunderTokenV1 } from "./utils/deployments"
 import * as chai from "chai"
+// eslint-disable-next-line node/no-missing-import
 import { wunderToEth } from "./utils/conversions"
 
 const dirtyChai = require("dirty-chai")
@@ -103,7 +105,7 @@ describe("Government", () => {
       )
     })
 
-    it("Should not be able to transfer if destination account is frozen", async () => {
+    it("V1 Should be able to transfer if destination account is frozen", async () => {
       const { wunderTokenV1, governor, acc1, acc2 } = await loadFixture(
         deployFullWunderTokenV1,
       )
@@ -145,18 +147,16 @@ describe("Government", () => {
       )
 
       // transfer 100 ZARS from src to dst
-      await expect(
-        wunderTokenV1.connect(src).transfer(dst.address, wunderToEth("100")),
-      ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
+      await wunderTokenV1.connect(src).transfer(dst.address, wunderToEth("100"))
 
-      // confirm src has 1000 ZARS
+      // confirm src has 900 ZARS
       expect(await wunderTokenV1.balanceOf(src.address)).to.equal(
-        wunderToEth("1000"),
+        wunderToEth("900"),
       )
 
-      // confirm dst has 1000 ZARS
+      // confirm dst has 1100 ZARS
       expect(await wunderTokenV1.balanceOf(dst.address)).to.equal(
-        wunderToEth("1000"),
+        wunderToEth("1100"),
       )
     })
 
@@ -263,7 +263,7 @@ describe("Government", () => {
       expect(await wunderTokenV1.isFrozen(acc1.address)).to.be.false()
     })
 
-    it("Should not be able to mint to a frozen account", async () => {
+    it("V1 Should be able to mint to a frozen account", async () => {
       const { wunderTokenV1, governor, minter, acc1 } = await loadFixture(
         deployFullWunderTokenV1,
       )
@@ -283,13 +283,11 @@ describe("Government", () => {
       )
 
       // mint 100 ZARS to acc1
-      await expect(
-        wunderTokenV1.connect(minter).mint(acc1.address, wunderToEth("100")),
-      ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
+      await wunderTokenV1.connect(minter).mint(acc1.address, wunderToEth("100"))
 
-      // confirm acc1 still has 1000 ZARS
+      // confirm acc1 now has 1100 ZARS
       expect(await wunderTokenV1.balanceOf(acc1.address)).to.equal(
-        wunderToEth("1000"),
+        wunderToEth("1100"),
       )
     })
   })

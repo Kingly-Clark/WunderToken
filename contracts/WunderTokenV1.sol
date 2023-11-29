@@ -153,7 +153,7 @@ contract WunderTokenV1 is
     override(ERC20Upgradeable, ERC20PausableUpgradeable)
     whenNotPaused
     whenNotFrozen(from)
-    whenNotFrozen(to)
+  // whenNotFrozen(to)
   {
     super._update(from, to, value);
   }
@@ -271,9 +271,9 @@ contract WunderTokenV1 is
       revert WunderTokenAccountZeroBalance(account);
     }
     uint256 balance = balanceOf(account);
-    unfreeze(account);
+    assert(unfreeze(account));
     _transfer(account, address(this), balance);
-    freeze(account);
+    assert(freeze(account));
     emit AddressSeized(account);
     return true;
   }
