@@ -19,7 +19,7 @@ contract WunderTokenV1 is
   /** ================================================================== */
   /** ========================= State variables ======================== */
   /** ================================================================== */
-  mapping(address => bool) private _frozen;
+  mapping(address => bool) internal _frozen;
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
   bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
@@ -84,10 +84,6 @@ contract WunderTokenV1 is
       revert WunderTokenAccountNotFrozen(account);
     }
     _;
-  }
-
-  function isFrozen(address account) public view returns (bool) {
-    return _frozen[account];
   }
 
   /** =================================================================== */
@@ -164,6 +160,7 @@ contract WunderTokenV1 is
     uint256 value
   )
     internal
+    virtual
     override(ERC20Upgradeable, ERC20PausableUpgradeable)
     whenNotPaused
     whenNotFrozen(from)
@@ -198,6 +195,10 @@ contract WunderTokenV1 is
   ) public virtual override onlyRole(BURNER_ROLE) {
     _spendAllowance(account, _msgSender(), value);
     _burn(account, value);
+  }
+
+  function isFrozen(address account) public view returns (bool) {
+    return _frozen[account];
   }
 
   /**

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
-import {WunderTokenV1} from "./WunderTokenV1.sol";
+import {WunderTokenV2} from "./WunderTokenV2.sol";
 
-contract WunderTokenV2 is WunderTokenV1 {
+contract WunderTokenV3 is WunderTokenV2 {
   function _update(
     address from,
     address to,
@@ -10,7 +10,7 @@ contract WunderTokenV2 is WunderTokenV1 {
   )
     internal
     virtual
-    override(WunderTokenV1)
+    override(WunderTokenV2)
     whenNotPaused
     whenNotFrozen(from)
     whenNotFrozen(to)
