@@ -2,10 +2,10 @@ import { ethers, upgrades } from "hardhat"
 import "@nomicfoundation/hardhat-chai-matchers"
 // eslint-disable-next-line node/no-missing-import
 import { WunderTokenV1 } from "../../typechain-types"
-// eslint-disable-next-line node/no-missing-import
-import { wunderToEth } from "./conversions"
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers"
+// eslint-disable-next-line node/no-missing-import
+import { initialBalance } from "./constants"
 export const deployWunderTokenV1 = async () => {
   const [owner, notOwner, minter, pauser, burner, governor, acc1, acc2, acc3] =
     (await ethers.getSigners()) as HardhatEthersSigner[]
@@ -114,9 +114,9 @@ export const deployFullWunderTokenV1 = async () => {
   await applyBurnerRole(wunderTokenV1, owner, burner)
   await applyGovernRole(wunderTokenV1, owner, governor)
 
-  await wunderTokenV1.connect(minter).mint(acc1.address, wunderToEth("1000"))
-  await wunderTokenV1.connect(minter).mint(acc2.address, wunderToEth("1000"))
-  await wunderTokenV1.connect(minter).mint(acc3.address, wunderToEth("1000"))
+  await wunderTokenV1.connect(minter).mint(acc1.address, initialBalance)
+  await wunderTokenV1.connect(minter).mint(acc2.address, initialBalance)
+  await wunderTokenV1.connect(minter).mint(acc3.address, initialBalance)
 
   return {
     wunderTokenV1,

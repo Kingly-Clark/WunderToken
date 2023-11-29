@@ -2,14 +2,14 @@ import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 import * as chai from "chai"
 import "@nomicfoundation/hardhat-chai-matchers"
 // eslint-disable-next-line node/no-missing-import
-import { deployWunderTokenV1 } from "./utils/deployments"
+import { deployWunderTokenV1 } from "../utils/deployments"
 
 const dirtyChai = require("dirty-chai")
 
 chai.use(dirtyChai)
 const expect = chai.expect
 
-describe("WunderToken", () => {
+describe("V1", () => {
   describe("Deployment", () => {
     it("Should be able to deploy", async () => {
       const { wunderTokenV1 } = await loadFixture(deployWunderTokenV1)

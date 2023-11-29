@@ -60,6 +60,15 @@ contract WunderTokenV1 is
     uint256[] amounts
   );
 
+  /**
+   * @dev Emitted when `amounts` tokens are moved from one account (`sender`) to multiple `recipients`.
+   */
+  event BatchTransfer(
+    address indexed sender,
+    address[] recipients,
+    uint256[] amounts
+  );
+
   /** =================================================================== */
   /** =========================== Modifiers ============================= */
   /** =================================================================== */
@@ -112,12 +121,12 @@ contract WunderTokenV1 is
   /**
    * @dev Array length too long
    */
-  error WunderTokenArrayLengthTooLong();
+  error WunderTokenArrayLengthExceeded();
 
   /**
    * @dev Insufficient funds
    */
-  error WunderTokenInsufficientFunds(address account);
+  error WunderTokenInsufficientBalance(address account, uint256 amount);
 
   /** =================================================================== */
   /** =========================== Functions ============================= */
@@ -200,13 +209,10 @@ contract WunderTokenV1 is
    */
   function freeze(
     address account
-  )
-    public
-    whenNotPaused
-    onlyRole(GOVERN_ROLE)
-    whenNotFrozen(account)
-    returns (bool)
-  {
+  ) public onlyRole(GOVERN_ROLE) whenNotFrozen(account) returns (bool) {
+    if (account == address(this)) {
+      revert WunderTokenAccountNotAllowed(account);
+    }
     _frozen[account] = true;
     emit AddressFrozen(account);
     return true;
@@ -227,13 +233,7 @@ contract WunderTokenV1 is
    */
   function unfreeze(
     address account
-  )
-    public
-    whenNotPaused
-    onlyRole(GOVERN_ROLE)
-    whenFrozen(account)
-    returns (bool)
-  {
+  ) public onlyRole(GOVERN_ROLE) whenFrozen(account) returns (bool) {
     _frozen[account] = false;
     emit AddressUnfrozen(account);
     return true;
@@ -257,23 +257,15 @@ contract WunderTokenV1 is
    */
   function seize(
     address account
-  )
-    public
-    whenNotPaused
-    onlyRole(GOVERN_ROLE)
-    whenFrozen(account)
-    returns (bool)
-  {
-    if (account == address(this)) {
-      revert WunderTokenAccountNotAllowed(account);
-    }
+  ) public onlyRole(GOVERN_ROLE) whenFrozen(account) returns (bool) {
+    // No need to check that account != address(this) since address(this) can't be frozen.
     if (balanceOf(account) <= 0) {
       revert WunderTokenAccountZeroBalance(account);
     }
     uint256 balance = balanceOf(account);
-    assert(unfreeze(account));
+    _frozen[account] = false;
     _transfer(account, address(this), balance);
-    assert(freeze(account));
+    _frozen[account] = true;
     emit AddressSeized(account);
     return true;
   }
@@ -295,7 +287,7 @@ contract WunderTokenV1 is
     uint256 amount
   ) public onlyRole(GOVERN_ROLE) returns (bool) {
     if (amount > balanceOf(address(this))) {
-      revert WunderTokenInsufficientFunds(_msgSender());
+      revert WunderTokenInsufficientBalance(_msgSender(), amount);
     }
     _transfer(address(this), _msgSender(), amount);
     emit FundsWithdrew(_msgSender(), amount);
@@ -327,13 +319,13 @@ contract WunderTokenV1 is
   function batchMint(
     address[] memory recipients,
     uint256[] memory amounts
-  ) external whenNotPaused onlyRole(MINTER_ROLE) {
+  ) external onlyRole(MINTER_ROLE) {
     if (recipients.length != amounts.length) {
       revert WunderTokenArrayLengthMismatch();
     }
 
     if (recipients.length > 256) {
-      revert WunderTokenArrayLengthTooLong();
+      revert WunderTokenArrayLengthExceeded();
     }
 
     for (uint256 i = 0; i < recipients.length; i++) {
@@ -341,6 +333,35 @@ contract WunderTokenV1 is
     }
 
     emit BatchMint(_msgSender(), recipients, amounts);
+  }
+
+  /**
+   * @dev See {IERC20Wunder-batchTransfer}.
+   * Requirements:
+   * - contract must not be paused.
+   * - throws if recipients and amounts length mismatch.
+   * - throws if recipients and amounts length is greater than 256.
+   * @param recipients Array of recipient addresses.
+   * @param amounts Array of amounts to be transferred.
+   */
+  function batchTransfer(
+    address[] memory recipients,
+    uint256[] memory amounts
+  ) external {
+    if (recipients.length != amounts.length) {
+      revert WunderTokenArrayLengthMismatch();
+    }
+
+    if (recipients.length > 256) {
+      revert WunderTokenArrayLengthExceeded();
+    }
+
+    for (uint256 i = 0; i < recipients.length; i++) {
+      address to = recipients[i];
+      _transfer(_msgSender(), to, amounts[i]);
+    }
+
+    emit BatchTransfer(_msgSender(), recipients, amounts);
   }
 
   /**
