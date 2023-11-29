@@ -15,14 +15,6 @@ const expect = chai.expect
 
 describe("V1", () => {
   describe("BatchTransfer", () => {
-    // TODO: test multiTransfer with 0 addresses
-    // TODO: test multiTransfer with 0 amounts
-    // TODO: test multiTransfer with 0 addresses and 0 amounts
-    // TODO: test multiTransfer with 1 address
-    // TODO: test multiTransfer with 1 amount
-    // TODO: test multiTransfer with mismatched addresses and amounts
-    // TODO: test ERC20 allowance works with multiTransfer
-
     it("Should be able to transfer to multiple accounts", async () => {
       const { wunderTokenV1, acc1, acc2, acc3, minter, owner } =
         await loadFixture(deployWunderTokenV1)
@@ -224,6 +216,35 @@ describe("V1", () => {
         wunderTokenV1,
         "WunderTokenArrayLengthExceeded",
       )
+    })
+
+    it("Should revert if there are 0 addresses and 0 amounts", async () => {
+      const { wunderTokenV1, acc1, acc2, minter, owner } =
+        await loadFixture(deployWunderTokenV1)
+      await applyMinterRole(wunderTokenV1, owner, minter)
+      await wunderTokenV1
+        .connect(minter)
+        .batchMint(
+          [acc1.address, acc2.address],
+          [initialBalance, initialBalance],
+        )
+
+      const src = acc1
+      const dst = acc2
+
+      // confirm src has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(src.address)).to.equal(
+        initialBalance,
+      )
+
+      // confirm dst has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(dst.address)).to.equal(
+        initialBalance,
+      )
+
+      await expect(
+        wunderTokenV1.connect(src).batchTransfer([], []),
+      ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenArrayEmpty")
     })
   })
 })

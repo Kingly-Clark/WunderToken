@@ -17,3 +17,5 @@ node_modules
 /build/contracts
 
 yarn-error.log
+
+/build

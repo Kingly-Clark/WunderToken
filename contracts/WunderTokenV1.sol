@@ -128,6 +128,11 @@ contract WunderTokenV1 is
    */
   error WunderTokenInsufficientBalance(address account, uint256 amount);
 
+  /**
+   * @dev Array is empty
+   */
+  error WunderTokenArrayEmpty();
+
   /** =================================================================== */
   /** =========================== Functions ============================= */
   /** =================================================================== */
@@ -328,6 +333,10 @@ contract WunderTokenV1 is
       revert WunderTokenArrayLengthExceeded();
     }
 
+    if (recipients.length == 0) {
+      revert WunderTokenArrayEmpty();
+    }
+
     for (uint256 i = 0; i < recipients.length; i++) {
       _mint(recipients[i], amounts[i]);
     }
@@ -354,6 +363,10 @@ contract WunderTokenV1 is
 
     if (recipients.length > 256) {
       revert WunderTokenArrayLengthExceeded();
+    }
+
+    if (recipients.length == 0) {
+      revert WunderTokenArrayEmpty();
     }
 
     for (uint256 i = 0; i < recipients.length; i++) {

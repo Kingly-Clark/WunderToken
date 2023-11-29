@@ -195,5 +195,14 @@ describe("V1", () => {
         "WunderTokenArrayLengthExceeded",
       )
     })
+
+    it("Should revert if there are 0 addresses and 0 amounts", async () => {
+      const { wunderTokenV1, minter, owner } =
+        await loadFixture(deployWunderTokenV1)
+      await applyMinterRole(wunderTokenV1, owner, minter)
+      await expect(
+        wunderTokenV1.connect(minter).batchMint([], []),
+      ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenArrayEmpty")
+    })
   })
 })
