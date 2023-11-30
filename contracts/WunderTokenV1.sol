@@ -150,7 +150,14 @@ contract WunderTokenV1 is
 
   function _authorizeUpgrade(
     address newImplementation
-  ) internal override onlyRole(UPGRADER_ROLE) {}
+  )
+    internal
+    override
+    onlyRole(UPGRADER_ROLE)
+  // solhint-disable-next-line no-empty-blocks
+  {
+
+  }
 
   // The following functions are overrides required by Solidity.
 
@@ -161,7 +168,7 @@ contract WunderTokenV1 is
   )
     internal
     virtual
-    override(ERC20Upgradeable, ERC20PausableUpgradeable)
+    override(ERC20PausableUpgradeable, ERC20Upgradeable)
     whenNotPaused
     whenNotFrozen(from)
   // whenNotFrozen(to)

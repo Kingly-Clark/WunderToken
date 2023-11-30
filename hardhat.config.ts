@@ -46,7 +46,7 @@ const config: HardhatUserConfig = {
     disambiguatePaths: false,
     runOnCompile: true,
     strict: true,
-    only: ["WunderTokenV1", "WunderTokenV2"],
+    only: ["WunderTokenV1", "WunderTokenV2", "WunderTokenV3"],
   },
 }
 

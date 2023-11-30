@@ -3,7 +3,12 @@ import { ethers, upgrades } from "hardhat"
 import "@nomicfoundation/hardhat-chai-matchers"
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers"
 // eslint-disable-next-line node/no-missing-import
-import { WunderTokenV3, WunderTokenV2 } from "../../typechain-types"
+import {
+  WunderTokenV3,
+  WunderTokenV2,
+  WunderTokenV1,
+  // eslint-disable-next-line node/no-missing-import
+} from "../../typechain-types"
 // eslint-disable-next-line node/no-missing-import
 import { applyUpgaraderRole } from "../utils/deployments"
 const dirtyChai = require("dirty-chai")
@@ -55,7 +60,7 @@ describe("V2", () => {
       const wunderTokenV3ProxyAddress = await wunderTokenV3Proxy.getAddress()
 
       const wunderTokenV3: WunderTokenV3 = await ethers.getContractAt(
-        "WunderTokenV2",
+        "WunderTokenV3",
         wunderTokenV3ProxyAddress,
       )
 
@@ -72,21 +77,38 @@ describe("V2", () => {
     it("Should be able to upgrade the proxy to V3", async () => {
       const [owner] = (await ethers.getSigners()) as HardhatEthersSigner[]
 
+      const WunderTokenV1 = await ethers.getContractFactory("WunderTokenV1")
       const WunderTokenV2 = await ethers.getContractFactory("WunderTokenV2")
       const WunderTokenV3 = await ethers.getContractFactory("WunderTokenV3")
-      const wunderTokenV2Proxy = await upgrades.deployProxy(
-        WunderTokenV2,
+
+      // Deploy V1
+      const wunderTokenV1Proxy = await upgrades.deployProxy(
+        WunderTokenV1,
         [owner.address],
         { initializer: "initialize" },
       )
-      await wunderTokenV2Proxy.waitForDeployment()
-      const wunderTokenV2ProxyAddress = await wunderTokenV2Proxy.getAddress()
+      await wunderTokenV1Proxy.waitForDeployment()
+      const wunderTokenV1ProxyAddress = await wunderTokenV1Proxy.getAddress()
 
-      const wunderTokenV2: WunderTokenV3 = await ethers.getContractAt(
+      const wunderTokenV1: WunderTokenV1 = await ethers.getContractAt(
+        "WunderTokenV1",
+        wunderTokenV1ProxyAddress,
+      )
+
+      // Upgrade to V2
+      await applyUpgaraderRole(wunderTokenV1, owner, owner)
+      const wunderTokenV2Proxy = await upgrades.upgradeProxy(
+        wunderTokenV1ProxyAddress,
+        WunderTokenV2,
+      )
+
+      const wunderTokenV2ProxyAddress = await wunderTokenV2Proxy.getAddress()
+      const wunderTokenV2: WunderTokenV2 = await ethers.getContractAt(
         "WunderTokenV2",
         wunderTokenV2ProxyAddress,
       )
 
+      // Upgrade to V3
       await applyUpgaraderRole(wunderTokenV2, owner, owner)
       const wunderTokenV3Proxy = await upgrades.upgradeProxy(
         wunderTokenV2ProxyAddress,
@@ -95,7 +117,7 @@ describe("V2", () => {
 
       const wunderTokenV3ProxyAddress = await wunderTokenV3Proxy.getAddress()
       const wunderTokenV3: WunderTokenV3 = await ethers.getContractAt(
-        "WunderTokenV2",
+        "WunderTokenV3",
         wunderTokenV3ProxyAddress,
       )
 

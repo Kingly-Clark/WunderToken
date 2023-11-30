@@ -1,7 +1,12 @@
 import { ethers, upgrades } from "hardhat"
 import "@nomicfoundation/hardhat-chai-matchers"
 // eslint-disable-next-line node/no-missing-import
-import { WunderTokenV1, WunderTokenV2 } from "../../typechain-types"
+import {
+  WunderTokenV1,
+  WunderTokenV2,
+  WunderTokenV3,
+  // eslint-disable-next-line node/no-missing-import
+} from "../../typechain-types"
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers"
 // eslint-disable-next-line node/no-missing-import
@@ -44,6 +49,15 @@ export const applyMinterRole = async (
   await wunderTokenV1
     .connect(owner)
     .grantRole(await wunderTokenV1.MINTER_ROLE(), minter.address)
+}
+export const applyVipRole = async (
+  wunderTokenV3: WunderTokenV3,
+  owner: HardhatEthersSigner,
+  minter: HardhatEthersSigner,
+) => {
+  await wunderTokenV3
+    .connect(owner)
+    .grantRole(await wunderTokenV3.VIP_ROLE(), minter.address)
 }
 
 export const applyPauserRole = async (
@@ -219,6 +233,101 @@ export const deployFullWunderTokenV2 = async () => {
 
   return {
     wunderTokenV2,
+    owner,
+    notOwner,
+    minter,
+    pauser,
+    burner,
+    governor,
+    acc1,
+    acc2,
+    acc3,
+  }
+}
+
+export const deployWunderTokenV3 = async () => {
+  const [owner, notOwner, minter, pauser, burner, governor, acc1, acc2, acc3] =
+    (await ethers.getSigners()) as HardhatEthersSigner[]
+
+  const WunderTokenV1 = await ethers.getContractFactory("WunderTokenV1")
+  const WunderTokenV2 = await ethers.getContractFactory("WunderTokenV2")
+
+  const wunderTokenV1Proxy = await upgrades.deployProxy(
+    WunderTokenV1,
+    [owner.address],
+    { initializer: "initialize" },
+  )
+  await wunderTokenV1Proxy.waitForDeployment()
+  const wunderTokenV1ProxyAddress = await wunderTokenV1Proxy.getAddress()
+  const wunderTokenV1: WunderTokenV1 = await ethers.getContractAt(
+    "WunderTokenV1",
+    wunderTokenV1ProxyAddress,
+  )
+
+  await applyUpgaraderRole(wunderTokenV1, owner, owner)
+  const wunderTokenV2Proxy = await upgrades.upgradeProxy(
+    wunderTokenV1ProxyAddress,
+    WunderTokenV2,
+  )
+  await revokeUpgaraderRole(wunderTokenV1, owner, owner)
+  const wunderTokenV2ProxyAddress = await wunderTokenV2Proxy.getAddress()
+  const wunderTokenV2: WunderTokenV2 = await ethers.getContractAt(
+    "WunderTokenV2",
+    wunderTokenV2ProxyAddress,
+  )
+
+  await applyUpgaraderRole(wunderTokenV2, owner, owner)
+  const WunderTokenV3 = await ethers.getContractFactory("WunderTokenV3")
+  const wunderTokenV3Proxy = await upgrades.upgradeProxy(
+    wunderTokenV2ProxyAddress,
+    WunderTokenV3,
+  )
+  await revokeUpgaraderRole(wunderTokenV2, owner, owner)
+  const wunderTokenV3ProxyAddress = await wunderTokenV3Proxy.getAddress()
+  const wunderTokenV3: WunderTokenV3 = await ethers.getContractAt(
+    "WunderTokenV3",
+    wunderTokenV3ProxyAddress,
+  )
+
+  return {
+    wunderTokenV3,
+    owner,
+    notOwner,
+    minter,
+    pauser,
+    burner,
+    governor,
+    acc1,
+    acc2,
+    acc3,
+  }
+}
+
+export const deployFullWunderTokenV3 = async () => {
+  const {
+    wunderTokenV3,
+    owner,
+    notOwner,
+    minter,
+    pauser,
+    burner,
+    governor,
+    acc1,
+    acc2,
+    acc3,
+  } = await loadFixture(deployWunderTokenV3)
+
+  await applyMinterRole(wunderTokenV3, owner, minter)
+  await applyPauserRole(wunderTokenV3, owner, pauser)
+  await applyBurnerRole(wunderTokenV3, owner, burner)
+  await applyGovernRole(wunderTokenV3, owner, governor)
+
+  await wunderTokenV3.connect(minter).mint(acc1.address, initialBalance)
+  await wunderTokenV3.connect(minter).mint(acc2.address, initialBalance)
+  await wunderTokenV3.connect(minter).mint(acc3.address, initialBalance)
+
+  return {
+    wunderTokenV3,
     owner,
     notOwner,
     minter,
