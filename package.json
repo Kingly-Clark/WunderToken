@@ -7,8 +7,9 @@
   "license": "MIT",
   "scripts": {
     "test": "npx hardhat test",
-    "clean": "npx hardhat clean && rm -rf coverage && rm -rf typechain && rm -rf artifacts && rm -rf cache && rm -f coverage.json && rm -rf .openzeppelin && rm -rf build",
+    "clean": "npx hardhat clean && rm -rf coverage && rm -rf typechain && rm -rf artifacts && rm -rf cache && rm -f coverage.json && rm -rf .openzeppelin && rm -rf build && rm -rf docs",
     "size": "npx hardhat size-contracts",
+    "docgen": "yarn run clean && npx hardhat docgen",
     "testWithGas": "REPORT_GAS=true npx hardhat test",
     "coverage": "npx hardhat coverage && open coverage/index.html",
     "coverage:dark": "npx hardhat coverage && open coverage/index.html",
@@ -25,7 +26,8 @@
     "@openzeppelin/contracts": "^5.0.0",
     "@openzeppelin/contracts-upgradeable": "^5.0.0",
     "@openzeppelin/hardhat-upgrades": "^2.4.1",
-    "hardhat": "^2.19.1"
+    "hardhat": "^2.19.1",
+    "solidity-docgen": "^0.6.0-beta.36"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",

@@ -5,6 +5,7 @@ import "solidity-coverage"
 import "hardhat-gas-reporter"
 import * as dotenv from "dotenv"
 import "hardhat-contract-sizer"
+import "solidity-docgen"
 dotenv.config()
 
 // This is a sample Hardhat task. To learn how to create your own go to
