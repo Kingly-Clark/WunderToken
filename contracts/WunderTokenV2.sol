@@ -8,6 +8,8 @@ contract WunderTokenV2 is WunderTokenV1 {
     _disableInitializers();
   }
 
+  /// @notice Adds the whenNotFrozen to the sender and recipient address
+  /// @inheritdoc WunderTokenV1
   function _update(
     address from,
     address to,

@@ -565,7 +565,7 @@ constructor() public
 function _update(address from, address to, uint256 value) internal virtual
 ```
 
-Adds the whenNotFrozen to the sender address
+Adds the whenNotFrozen to the sender and recipient address
 
 _Transfers a `value` amount of tokens from `from` to `to`, or alternatively mints (or burns) if `from`
 (or `to`) is the zero address. All customizations to transfers, mints, and burns should be done by overriding
@@ -575,13 +575,15 @@ Emits a {Transfer} event._
 
 ## WunderTokenV3
 
+WunderTokenV3 is just an example of a contract that can be upgraded adding a simple VIP role and a reward
+
 ### VIP_ROLE
 
 ```solidity
 bytes32 VIP_ROLE
 ```
 
-==================================================================
+========================= State variables ========================
 
 ### _vip
 
@@ -607,7 +609,7 @@ uint256 REWARD_AMOUNT
 event VIPSet(address account)
 ```
 
-===================================================================
+=========================== Events ================================
 
 ### VIPUnset
 
@@ -621,7 +623,7 @@ event VIPUnset(address account)
 modifier onlyVIP()
 ```
 
-===================================================================
+=========================== Modifiers =============================
 
 ### VIPAlreadySet
 
@@ -629,7 +631,7 @@ modifier onlyVIP()
 error VIPAlreadySet(address account)
 ```
 
-===================================================================
+============================= Errors ==============================
 
 ### VIPAlreadyUnset
 
