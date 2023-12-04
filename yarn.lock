@@ -964,7 +964,7 @@
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-toolbox/-/hardhat-toolbox-4.0.0.tgz#eb1f619218dd1414fa161dfec92d3e5e53a2f407"
   integrity sha512-jhcWHp0aHaL0aDYj8IJl80v4SZXWMS1A2XxXa1CA6pBiFfJKuZinCkO6wb+POAt0LIfXB3gA3AgdcOccrcwBwA==
 
-"@nomicfoundation/hardhat-verify@^2.0.0":
+"@nomicfoundation/hardhat-verify@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-verify/-/hardhat-verify-2.0.1.tgz#1b9d707516f8e5db4e1d6bd679acbfd71e567928"
   integrity sha512-TuJrhW5p9x92wDRiRhNkGQ/wzRmOkfCLkoRg8+IRxyeLigOALbayQEmkNiGWR03vGlxZS4znXhKI7y97JwZ6Og==
