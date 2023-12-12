@@ -2,7 +2,12 @@ import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 import * as chai from "chai"
 import "@nomicfoundation/hardhat-chai-matchers"
 // eslint-disable-next-line node/no-missing-import
-import { applyMinterRole, deployWunderTokenV1 } from "../utils/deployments"
+import {
+  applyGovernRole,
+  applyMinterRole,
+  deployWunderTokenV1,
+  // eslint-disable-next-line node/no-missing-import
+} from "../utils/deployments"
 // eslint-disable-next-line node/no-missing-import
 import { initialBalance } from "../utils/constants"
 // eslint-disable-next-line node/no-missing-import
@@ -245,6 +250,118 @@ describe("V1", () => {
       await expect(
         wunderTokenV1.connect(src).batchTransfer([], []),
       ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenArrayEmpty")
+    })
+
+    it("Should revert if sender is frozen", async () => {
+      const { wunderTokenV1, acc1, acc2, acc3, minter, owner, governor } =
+        await loadFixture(deployWunderTokenV1)
+      await applyMinterRole(wunderTokenV1, owner, minter)
+      await wunderTokenV1
+        .connect(minter)
+        .batchMint(
+          [acc1.address, acc2.address, acc3.address],
+          [initialBalance, initialBalance, initialBalance],
+        )
+
+      const src = acc2
+
+      // confirm src has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(src.address)).to.equal(
+        initialBalance,
+      )
+      // confirm acc2 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc2.address)).to.equal(
+        initialBalance,
+      )
+      // confirm acc3 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc3.address)).to.equal(
+        initialBalance,
+      )
+
+      await applyGovernRole(wunderTokenV1, owner, governor)
+
+      // // freeze acc2
+      await wunderTokenV1.connect(governor).freeze(acc2.address)
+
+      // transfer 100 Wunder from src to acc2 and acc3 respectively
+      await expect(
+        wunderTokenV1
+          .connect(src)
+          .batchTransfer(
+            [acc1.address, acc3.address],
+            [wunderToEth("100"), wunderToEth("100")],
+          ),
+      ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
+
+      // confirm src has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(src.address)).to.equal(
+        initialBalance,
+      )
+
+      // confirm acc2 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc2.address)).to.equal(
+        initialBalance,
+      )
+
+      // confirm acc3 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc3.address)).to.equal(
+        initialBalance,
+      )
+    })
+
+    it("Shouldn't revert if receiver is frozen", async () => {
+      const { wunderTokenV1, acc1, acc2, acc3, minter, owner, governor } =
+        await loadFixture(deployWunderTokenV1)
+      await applyMinterRole(wunderTokenV1, owner, minter)
+      await wunderTokenV1
+        .connect(minter)
+        .batchMint(
+          [acc1.address, acc2.address, acc3.address],
+          [initialBalance, initialBalance, initialBalance],
+        )
+
+      const receiver = acc2
+      const src = acc1
+
+      // confirm src has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(receiver.address)).to.equal(
+        initialBalance,
+      )
+      // confirm acc2 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc2.address)).to.equal(
+        initialBalance,
+      )
+      // confirm acc3 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc3.address)).to.equal(
+        initialBalance,
+      )
+
+      await applyGovernRole(wunderTokenV1, owner, governor)
+
+      // // freeze acc2
+      await wunderTokenV1.connect(governor).freeze(acc2.address)
+
+      // transfer 100 Wunder from src to acc2 and acc3 respectively
+      await wunderTokenV1
+        .connect(src)
+        .batchTransfer(
+          [acc2.address, acc3.address],
+          [wunderToEth("100"), wunderToEth("100")],
+        )
+      // confirm src has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(src.address)).to.equal(
+        wunderToEth("800"),
+      )
+
+      // confirm acc2 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc2.address)).to.equal(
+        wunderToEth("1100"),
+      )
+
+      // confirm acc3 has 1000 Wunder
+      expect(await wunderTokenV1.balanceOf(acc3.address)).to.equal(
+        wunderToEth("1100"),
+      )
     })
   })
 })
