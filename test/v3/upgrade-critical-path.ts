@@ -120,7 +120,7 @@ describe("Critical Path ", () => {
     ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
 
     // 10. Check state befor upgrade
-    expect(await wunderTokenV1.name()).to.equal("Wunder Token")
+    expect(await wunderTokenV1.name()).to.equal("Wunderpar")
     expect(await wunderTokenV1.symbol()).to.equal("WUNDER")
     expect(await wunderTokenV1.totalSupply()).to.equal(wunderToEth("600"))
 
@@ -175,7 +175,7 @@ describe("Critical Path ", () => {
     )
 
     // 12. Check state after upgrade
-    expect(await wunderTokenV2.name()).to.equal("Wunder Token")
+    expect(await wunderTokenV2.name()).to.equal("Wunderpar")
     expect(await wunderTokenV2.symbol()).to.equal("WUNDER")
     expect(await wunderTokenV2.totalSupply()).to.equal(wunderToEth("600"))
 

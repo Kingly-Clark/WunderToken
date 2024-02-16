@@ -14,7 +14,7 @@ describe("V1", () => {
     it("Should be able to deploy", async () => {
       const { wunderTokenV1 } = await loadFixture(deployWunderTokenV1)
 
-      expect(await wunderTokenV1.name()).to.equal("Wunder Token")
+      expect(await wunderTokenV1.name()).to.equal("Wunderpar")
       expect(await wunderTokenV1.symbol()).to.equal("WUNDER")
     })
 

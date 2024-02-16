@@ -6,9 +6,13 @@ const WUNDERPAR_SERVER_ADDRESS = "0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B"
 async function main() {
   const signers = await ethers.getSigners()
   const WunderTokenV1 = await ethers.getContractFactory("WunderTokenV1")
-  const defaultAdmin = signers[0].address
+  const signer = signers[0]
+  const defaultAdmin = signer.address
 
   console.log(`Deploying WunderTokenV1 using wallet ${defaultAdmin}`)
+  const balance = await ethers.provider.getBalance(defaultAdmin)
+  console.log(`Account balance: ${ethers.formatEther(balance)} ETH`)
+
   const wunderTokenV1 = await upgrades.deployProxy(WunderTokenV1, [
     defaultAdmin,
   ])

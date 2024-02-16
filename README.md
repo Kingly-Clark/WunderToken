@@ -1,4 +1,4 @@
-# Wunder Token
+# Wunderpar
 
 ## Intention
 
@@ -12,11 +12,11 @@ Our mission is to enhance the golf experience for players of all skill levels an
 | ----------- | ------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
 | Testnet     | Mumbai  | `0x46160352FE480E8E26b0e10FAaefDDF757Ba6Ec4` | `0x099E7B298851F9F2a468385DB6A2E3e90c73e035` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
 | Staging     | Polygon | `0x5245303456acf9fCAfBd98Ff19BCA421580087cf` | `0xb7e5F5716c3563a1c410Aa8244A3C63924f1b0E8` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
-| Prod        | Polygon |                                              |                                              |                                              |                                              |
+| Prod        | Polygon | `0x28eBFAF629A858D83550B4B8292C7995aF2E32aa` | `0xc8Ba1B2270017f73e9e9Dc2A50779591D4177A8E` | `0x5f73be3809D89e13257877Aa8c47157c3765d081` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
 
 ## Codebase
 
-Wunder Token is an ERC20 coin which draws a lot of inspiration from the <a href="https://paxos.com/usdp/">USDP</a> project. It is an upgradable EIP-20 compatible contract with a few additional features:
+Wunderpar is an ERC20 coin which draws a lot of inspiration from the <a href="https://paxos.com/usdp/">USDP</a> project. It is an upgradable EIP-20 compatible contract with a few additional features:
 
 - The ability for an authorized wallet to `freeze-and-seize` funds from a user's account.
 - The ability for an authorized wallet to do a batchMint.
@@ -46,3 +46,14 @@ Uses the <a href='https://docs.openzeppelin.com/upgrades-plugins/1.x/' >OpenZepp
 ## Glosary
 
 - `Seized`: When a wallet is frozen, the funds are not lost. They are just not accessible by the user. The funds can be seized by the `GOVERN_ROLE` wallet which will transfer the the funds to the WunderToken contract. The funds can then be withdrawn by the `GOVERN_ROLE` wallet using the `withdraw` function.
+
+## Deployment With Ledger
+
+- Setup Ledger with seedphrase
+- Install Ledger Live
+- Install Ethereum App on Ledger
+- Add Account
+  - `44'/60'/0'/0/0` should be `0x5f73be3809D89e13257877Aa8c47157c3765d081`
+- Enable Blind Signatures in Ethereum App
+- `npx hardhat run scripts/1.deploy-wunderTokenV1.ts  --network polygon`
+- `npx hardhat verify --network polygon 0xf387300F3e2BEf4cC676D3bCD8bb59265e130e53`

@@ -32,7 +32,7 @@ describe("V1", () => {
       const wunderTokenV1Name = await wunderTokenV1.name()
       const wunderTokenV1Symbol = await wunderTokenV1.symbol()
 
-      expect(wunderTokenV1Name).to.equal("Wunder Token")
+      expect(wunderTokenV1Name).to.equal("Wunderpar")
       expect(wunderTokenV1Symbol).to.equal("WUNDER")
 
       expect(wunderTokenV1ProxyAddress).to.not.be.undefined()
@@ -102,7 +102,7 @@ describe("V1", () => {
       const wunderTokenV2Name = await wunderTokenV2.name()
       const wunderTokenV2Symbol = await wunderTokenV2.symbol()
 
-      expect(wunderTokenV2Name).to.equal("Wunder Token")
+      expect(wunderTokenV2Name).to.equal("Wunderpar")
       expect(wunderTokenV2Symbol).to.equal("WUNDER")
     })
   })
