@@ -80,6 +80,12 @@ const config: HardhatUserConfig = {
       gasPrice: 10e9,
       ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
     },
+    amoy: {
+      url: process.env.AMOY_NODE,
+      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      gasPrice: 10e9,
+      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+    },
     polygon: {
       url: process.env.POLYGON_NODE,
       // accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],

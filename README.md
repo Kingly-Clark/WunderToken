@@ -8,9 +8,27 @@ Our mission is to enhance the golf experience for players of all skill levels an
 
 ## Deployments
 
+The token can be deployed by running:
+
+```bash
+npx hardhat run scripts/1.deploy-wunderTokenV1.ts --network <<network>>
+```
+
+You can verify the contract by running:
+
+```bash
+npx hardhat verify --network <<network>> <<contract-address>>
+```
+
+Verify the network you've deployed to supports verification by running:
+```bash
+npx hardhat verify --list-networks
+```
+
 | Environment | Chain   | WUNDER Proxy                                 | V1 Implementation                            | DEFAULT_ADMIN                                | MINTER_ROLE                                  |
 | ----------- | ------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
 | Testnet     | Mumbai  | `0x46160352FE480E8E26b0e10FAaefDDF757Ba6Ec4` | `0x099E7B298851F9F2a468385DB6A2E3e90c73e035` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Testnet     | Amoy    | `0xA201D1aB2264c19893Ebe489280c1456a8B29EB6`                                           | `0x8A03A5ff393DD6Bf38839ED5547D0D692D6f7b68`                                           | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
 | Staging     | Polygon | `0x5245303456acf9fCAfBd98Ff19BCA421580087cf` | `0xb7e5F5716c3563a1c410Aa8244A3C63924f1b0E8` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
 | Prod        | Polygon | `0x28eBFAF629A858D83550B4B8292C7995aF2E32aa` | `0xc8Ba1B2270017f73e9e9Dc2A50779591D4177A8E` | `0x5f73be3809D89e13257877Aa8c47157c3765d081` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
 
