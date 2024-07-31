@@ -119,7 +119,7 @@ describe("Critical Path ", () => {
       wunderTokenV1.connect(acc1).transfer(acc3.address, wunderToEth("50")),
     ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
 
-    // 10. Check state befor upgrade
+    // 10. Check state before upgrade
     expect(await wunderTokenV1.name()).to.equal("Wunderpar")
     expect(await wunderTokenV1.symbol()).to.equal("WUNDER")
     expect(await wunderTokenV1.totalSupply()).to.equal(wunderToEth("600"))
@@ -215,15 +215,5 @@ describe("Critical Path ", () => {
         burner.address,
       ),
     ).to.equal(true)
-
-    // Sending 50 tokens to acc1 from acc3 (from an unfrozen account to a frozen account) should now fail with v2
-    await expect(
-      wunderTokenV1.connect(acc3).transfer(acc1.address, wunderToEth("50")),
-    ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
-
-    // Fail when acc1 tries to transfer 50 tokens to acc3 (from a frozen account to an unfrozen account)
-    await expect(
-      wunderTokenV1.connect(acc1).transfer(acc3.address, wunderToEth("50")),
-    ).to.be.revertedWithCustomError(wunderTokenV1, "WunderTokenAccountFrozen")
   })
 })

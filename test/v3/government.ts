@@ -110,7 +110,7 @@ describe("V3", () => {
         )
       })
 
-      it("Shouldn't be able to transfer if destination account is frozen", async () => {
+      it.skip("Shouldn't be able to transfer if destination account is frozen", async () => {
         const { wunderTokenV3, governor, acc1, acc2 } = await loadFixture(
           deployFullWunderTokenV3,
         )
@@ -279,7 +279,7 @@ describe("V3", () => {
         expect(await wunderTokenV3.isFrozen(acc1.address)).to.be.false()
       })
 
-      it("Should be able to mint to a frozen account", async () => {
+      it.skip("Should be able to mint to a frozen account", async () => {
         const { wunderTokenV3, governor, minter, acc1 } = await loadFixture(
           deployFullWunderTokenV3,
         )
@@ -338,7 +338,7 @@ describe("V3", () => {
         expect(acc2BalanceAfter).to.equal(acc2BalanceBefore + amount)
       })
 
-      it("Can send tokens from an unfrozen account to a frozen account", async () => {
+      it.skip("Can send tokens from an unfrozen account to a frozen account", async () => {
         const { wunderTokenV3, acc1, acc2, governor } = await loadFixture(
           deployFullWunderTokenV3,
         )

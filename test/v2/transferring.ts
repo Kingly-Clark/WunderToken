@@ -7,6 +7,7 @@ import { applyMinterRole, deployWunderTokenV2 } from "../utils/deployments"
 import { initialBalance } from "../utils/constants"
 // eslint-disable-next-line node/no-missing-import
 import { wunderToEth } from "../utils/conversions"
+import { generateGUID, guidToBytes16 } from "../utils/guid"
 
 const dirtyChai = require("dirty-chai")
 
@@ -14,6 +15,54 @@ chai.use(dirtyChai)
 const expect = chai.expect
 
 describe("V2", () => {
+  describe("Transfer", () => {
+    it("Should emit a TransferWithId for the transferWithId method", async () => {
+      const { wunderTokenV2, acc1, acc2, minter, owner } =
+        await loadFixture(deployWunderTokenV2)
+      await applyMinterRole(wunderTokenV2, owner, minter)
+      await wunderTokenV2
+        .connect(minter)
+        .batchMint(
+          [acc1.address, acc2.address],
+          [initialBalance, initialBalance],
+        )
+
+      const src = acc1
+      const dst = acc2
+
+      // confirm src has 1000 Wunder
+      expect(await wunderTokenV2.balanceOf(src.address)).to.equal(
+        initialBalance,
+      )
+
+      // confirm dst has 1000 Wunder
+      expect(await wunderTokenV2.balanceOf(dst.address)).to.equal(
+        initialBalance,
+      )
+
+      const guid = generateGUID()
+      const guidBytes16 = guidToBytes16(guid)
+
+      await expect(
+        wunderTokenV2
+          .connect(src)
+          .transferWithId(dst.address, wunderToEth("100"), guidBytes16),
+      )
+        .to.emit(wunderTokenV2, "TransferWithId")
+        .withArgs(src.address, dst.address, wunderToEth("100"), guidBytes16)
+
+      // confirm src has 900 Wunder
+      expect(await wunderTokenV2.balanceOf(src.address)).to.equal(
+        wunderToEth("900"),
+      )
+
+      // confirm dst has 1100 Wunder
+      expect(await wunderTokenV2.balanceOf(dst.address)).to.equal(
+        wunderToEth("1100"),
+      )
+    })
+  })
+
   describe("BatchTransfer", () => {
     it("Should be able to transfer to multiple accounts", async () => {
       const { wunderTokenV2, acc1, acc2, acc3, minter, owner } =

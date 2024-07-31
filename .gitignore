@@ -19,3 +19,8 @@ yarn-error.log
 
 /build
 .DS_Store
+
+gasPriceBug
+*.csv
+*.ipynb
+transfers

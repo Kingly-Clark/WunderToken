@@ -8,6 +8,7 @@ import "hardhat-contract-sizer"
 import "solidity-docgen"
 import "@nomicfoundation/hardhat-verify"
 import "@nomicfoundation/hardhat-ledger"
+
 dotenv.config()
 const WUNDERPAR_DEPLOYER_WALLET = "0x5f73be3809D89e13257877Aa8c47157c3765d081"
 
@@ -45,7 +46,9 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       polygonMumbai: process.env.POLYGONSCAN_API_KEY ?? "",
+      polygonAmoy: process.env.POLYGONSCAN_API_KEY ?? "",
       polygon: process.env.POLYGONSCAN_API_KEY ?? "",
+      arbitrumOne: process.env.ARBITRUMSCAN_API_KEY ?? "",
     },
   },
   sourcify: {
@@ -83,14 +86,26 @@ const config: HardhatUserConfig = {
     amoy: {
       url: process.env.AMOY_NODE,
       accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
-      gasPrice: 10e9,
+      gasPrice: 35e9,
       // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
     },
     polygon: {
       url: process.env.POLYGON_NODE,
-      // accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
-      gasPrice: 360e9,
-      ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      gasPrice: 45e9,
+      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+    },
+    arbitrum_sepolia: {
+      url: process.env.ARBITRUM_SEPOLIA_RPC_URL,
+      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      gasPrice: 10e9,
+      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+    },
+    arbitrum: {
+      url: process.env.ARBITRUM_RPC_URL,
+      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      gasPrice: 10e6,
+      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
     },
     ganache: {
       url: "http://127.0.0.1:7545",

@@ -6,6 +6,26 @@
 
 Our mission is to enhance the golf experience for players of all skill levels and ages by offering a unique rewards system, comprehensive golf tools, and access to an exclusive marketplace, incentivizing them to play even more rounds, and earn while doing so.
 
+## Getting Started
+
+To get started, clone the repository and install the dependencies:
+
+```bash
+yarn
+```
+
+Compile the contracts by running:
+
+```bash
+npx hardhat compile
+```
+
+Run the test suite by running:
+
+```bash
+npx hardhat test
+```
+
 ## Deployments
 
 The token can be deployed by running:
@@ -21,16 +41,19 @@ npx hardhat verify --network <<network>> <<contract-address>>
 ```
 
 Verify the network you've deployed to supports verification by running:
+
 ```bash
 npx hardhat verify --list-networks
 ```
 
-| Environment | Chain   | WUNDER Proxy                                 | V1 Implementation                            | DEFAULT_ADMIN                                | MINTER_ROLE                                  |
-| ----------- | ------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
-| Testnet     | Mumbai  | `0x46160352FE480E8E26b0e10FAaefDDF757Ba6Ec4` | `0x099E7B298851F9F2a468385DB6A2E3e90c73e035` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
-| Testnet     | Amoy    | `0xA201D1aB2264c19893Ebe489280c1456a8B29EB6`                                           | `0x8A03A5ff393DD6Bf38839ED5547D0D692D6f7b68`                                           | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
-| Staging     | Polygon | `0x5245303456acf9fCAfBd98Ff19BCA421580087cf` | `0xb7e5F5716c3563a1c410Aa8244A3C63924f1b0E8` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
-| Prod        | Polygon | `0x28eBFAF629A858D83550B4B8292C7995aF2E32aa` | `0xc8Ba1B2270017f73e9e9Dc2A50779591D4177A8E` | `0x5f73be3809D89e13257877Aa8c47157c3765d081` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Environment | Chain    | WUNDER Proxy                                 | V1 Implementation                            | V2 Implementation                            | DEFAULT_ADMIN                                | MINTER_ROLE                                  |
+| ----------- | -------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| Testnet     | Mumbai   | `0x46160352FE480E8E26b0e10FAaefDDF757Ba6Ec4` | `0x099E7B298851F9F2a468385DB6A2E3e90c73e035` |                                              | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Testnet     | Amoy     | `0xA201D1aB2264c19893Ebe489280c1456a8B29EB6` | `0x8A03A5ff393DD6Bf38839ED5547D0D692D6f7b68` | `0x1176121630EcFCeaAEA1494246ed28824720b991` | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Testnet     | Arbitrum | `0xA201D1aB2264c19893Ebe489280c1456a8B29EB6` | `0x8A03A5ff393DD6Bf38839ED5547D0D692D6f7b68` |                                              | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Staging     | Polygon  | `0x5245303456acf9fCAfBd98Ff19BCA421580087cf` | `0xb7e5F5716c3563a1c410Aa8244A3C63924f1b0E8` |                                              | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Staging     | Arbitrum | `0xA201D1aB2264c19893Ebe489280c1456a8B29EB6` | `0x8A03A5ff393DD6Bf38839ED5547D0D692D6f7b68` |                                              | `0xA04703511790408902F71Bb2230c23591c4c54C4` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
+| Prod        | Polygon  | `0x28eBFAF629A858D83550B4B8292C7995aF2E32aa` | `0xc8Ba1B2270017f73e9e9Dc2A50779591D4177A8E` |                                              | `0x5f73be3809D89e13257877Aa8c47157c3765d081` | `0x7D78710570D65b17D860Dd6AC51ECa426cc8Ee9B` |
 
 ## Codebase
 
@@ -45,6 +68,12 @@ Documentation for each of the methods in the contract can be found <a href='./do
 ### Upgradability
 
 Uses the <a href='https://docs.openzeppelin.com/upgrades-plugins/1.x/' >OpenZeppelin Upgrades Plugins</a> to deploy the contract. The contract is deployed using the `deployProxy` method. This method deploys a proxy contract which points to the implementation contract. The implementation contract is the `WunderToken` contract. To upgrade the contract, a new implementation contract is deployed and the proxy contract is updated to point to the new implementation contract using the `upgradeProxy` method.
+
+A sample upgrade script can be found <a href='./scripts/2.upgrade-wunderTokenV2.ts'>here</a>. Update the proxy address and run using the following command:
+
+```bash
+npx hardhat run scripts/2.upgrade-wunderTokenV2.ts --network <<network>>
+```
 
 ### Roles
 
