@@ -11,6 +11,9 @@ import "@nomicfoundation/hardhat-ledger"
 
 dotenv.config()
 const WUNDERPAR_DEPLOYER_WALLET = "0x5f73be3809D89e13257877Aa8c47157c3765d081"
+const WUNDERFAN_DEPLOYER_WALLET = "0xB5a8A434912Ac6ff9Fa1b3C99fDC8Af5789b06b8"
+
+const DEPLOYER_WALLET = WUNDERFAN_DEPLOYER_WALLET
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -23,9 +26,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 })
 
 task("sign", "Signs a message", async (_, hre) => {
-  const message =
-    "[polygonscan.com 16/02/2024 15:49:18] I, hereby verify that I am the owner/creator of the address [0x28eBFAF629A858D83550B4B8292C7995aF2E32aa]"
-  const account = WUNDERPAR_DEPLOYER_WALLET
+  const message = "asdf"
+  const account = DEPLOYER_WALLET
 
   const signature = await hre.network.provider.request({
     method: "personal_sign",
@@ -49,6 +51,7 @@ const config: HardhatUserConfig = {
       polygonAmoy: process.env.POLYGONSCAN_API_KEY ?? "",
       polygon: process.env.POLYGONSCAN_API_KEY ?? "",
       arbitrumOne: process.env.ARBITRUMSCAN_API_KEY ?? "",
+      arbitrumSepolia: process.env.ARBITRUMSCAN_API_KEY ?? "",
     },
   },
   sourcify: {
@@ -75,37 +78,37 @@ const config: HardhatUserConfig = {
       blockGasLimit: 30e6,
       gas: 24e6,
       gasPrice: 8e9,
-      ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      ledgerAccounts: [DEPLOYER_WALLET],
     },
     mumbai: {
       url: process.env.MUMBAI_NODE,
       // accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 10e9,
-      ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      ledgerAccounts: [DEPLOYER_WALLET],
     },
     amoy: {
       url: process.env.AMOY_NODE,
       accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 35e9,
-      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      // ledgerAccounts: [DEPLOYER_WALLET],
     },
     polygon: {
       url: process.env.POLYGON_NODE,
       accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 45e9,
-      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      // ledgerAccounts: [DEPLOYER_WALLET],
     },
-    arbitrum_sepolia: {
+    arbitrumSepolia: {
       url: process.env.ARBITRUM_SEPOLIA_RPC_URL,
       accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 10e9,
-      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      // ledgerAccounts: [DEPLOYER_WALLET],
     },
     arbitrum: {
       url: process.env.ARBITRUM_RPC_URL,
-      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      // accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 10e6,
-      // ledgerAccounts: [WUNDERPAR_DEPLOYER_WALLET],
+      ledgerAccounts: [DEPLOYER_WALLET],
     },
     ganache: {
       url: "http://127.0.0.1:7545",

@@ -8,6 +8,7 @@ import { initialBalance } from "../utils/constants"
 // eslint-disable-next-line node/no-missing-import
 import { wunderToEth } from "../utils/conversions"
 import { generateGUID, guidToBytes16, bytes16ToHex } from "../utils/guid"
+import { ethers } from "hardhat"
 
 const dirtyChai = require("dirty-chai")
 
@@ -206,7 +207,7 @@ describe("V2", () => {
       ).to.be.revertedWithCustomError(wunderTokenV2, "WunderTokenArrayEmpty")
     })
 
-    it("Should emit a TransferWithId for the batchMintWithId method", async () => {
+    it("Should emit a BatchMintWithId for the batchMintWithId method", async () => {
       const { wunderTokenV2, acc1, acc2, acc3, minter, owner } =
         await loadFixture(deployWunderTokenV2)
       await applyMinterRole(wunderTokenV2, owner, minter)
@@ -226,24 +227,11 @@ describe("V2", () => {
       const guids = Array(3)
         .fill(null)
         .map(() => generateGUID())
-      console.log({ guids })
       const guidsBytes16 = guids
         .map((guid) => guidToBytes16(guid))
         .map((bytes) => bytes16ToHex(bytes))
-      console.log({ guidsBytes16 })
       const recipients = [acc1.address, acc2.address, acc3.address]
       const amounts = Array(3).fill(initialBalance)
-
-      console.log(`Length of guidsBytes16: ${guidsBytes16.length}`)
-      console.log(`Length of recipients: ${recipients.length}`)
-      console.log(`Length of amounts: ${amounts.length}`)
-
-      console.log(`recipients:`)
-      console.log({ recipients })
-      console.log(`amounts:`)
-      console.log({ amounts })
-      console.log(`guids:`)
-      console.log({ guids })
 
       await expect(
         await wunderTokenV2
@@ -267,6 +255,38 @@ describe("V2", () => {
       expect(await wunderTokenV2.balanceOf(acc3.address)).to.equal(
         initialBalance,
       )
+    })
+
+    it("Should emit a BatchMintWithId event for 256 entries", async () => {
+      const { wunderTokenV2, minter, owner } =
+        await loadFixture(deployWunderTokenV2)
+      await applyMinterRole(wunderTokenV2, owner, minter)
+
+      const initialBalance = wunderToEth("100")
+
+      // Generate 256 GUIDs, recipients, and amounts
+      const recipients = Array(256)
+        .fill(null)
+        .map(() => ethers.Wallet.createRandom().address)
+      const amounts = Array(256).fill(initialBalance)
+      const guidsBytes16 = Array(256)
+        .fill(null)
+        .map(() => bytes16ToHex(guidToBytes16(generateGUID())))
+
+      await expect(
+        wunderTokenV2
+          .connect(minter)
+          .batchMintWithId(recipients, amounts, guidsBytes16),
+      )
+        .to.emit(wunderTokenV2, "BatchMintWithId")
+        .withArgs(minter.address, recipients, amounts, guidsBytes16)
+
+      // Confirm balances
+      for (let i = 0; i < 256; i++) {
+        expect(await wunderTokenV2.balanceOf(recipients[i])).to.equal(
+          initialBalance,
+        )
+      }
     })
   })
 })
