@@ -2,7 +2,7 @@
 
 ## Intention
 
-`<a href="https://wunderpar.com/">`Wunderpar`</a>` is an innovative golf app that combines the power of blockchain technology with the passion of golfers worldwide. The app can be downloaded for free on the App Store and Google Play. To view read our slightly off-Whitepaper, please visit `<a href="https://wunderpar.com/graypaper">`wunderpar.com/graypaper`</a>`.
+`<a href="https://wunderpar.com/">`Wunderpar `</a>` is an innovative golf app that combines the power of blockchain technology with the passion of golfers worldwide. The app can be downloaded for free on the App Store and Google Play. To view read our slightly off-Whitepaper, please visit `<a href="https://wunderpar.com/graypaper">`wunderpar.com/graypaper `</a>`.
 
 Our mission is to enhance the golf experience for players of all skill levels and ages by offering a unique rewards system, comprehensive golf tools, and access to an exclusive marketplace, incentivizing them to play even more rounds, and earn while doing so.
 
@@ -58,19 +58,19 @@ npx hardhat verify --list-networks
 
 ## Codebase
 
-Wunderpar is an ERC20 coin which draws a lot of inspiration from the `<a href="https://paxos.com/usdp/">`USDP`</a>` project. It is an upgradable EIP-20 compatible contract with a few additional features:
+Wunderpar is an ERC20 coin which draws a lot of inspiration from the `<a href="https://paxos.com/usdp/">`USDP `</a>` project. It is an upgradable EIP-20 compatible contract with a few additional features:
 
 - The ability for an authorized wallet to `freeze-and-seize` funds from a user's account.
 - The ability for an authorized wallet to do a batchMint.
 - The ability for to do a batchTransfer.
 
-Documentation for each of the methods in the contract can be found `<a href='./docs/index.md'>`here`</a>`.
+Documentation for each of the methods in the contract can be found `<a href='./docs/index.md'>`here `</a>`.
 
 ### Upgradability
 
-Uses the `<a href='https://docs.openzeppelin.com/upgrades-plugins/1.x/' >`OpenZeppelin Upgrades Plugins`</a>` to deploy the contract. The contract is deployed using the `deployProxy` method. This method deploys a proxy contract which points to the implementation contract. The implementation contract is the `WunderToken` contract. To upgrade the contract, a new implementation contract is deployed and the proxy contract is updated to point to the new implementation contract using the `upgradeProxy` method.
+Uses the `<a href='https://docs.openzeppelin.com/upgrades-plugins/1.x/' >`OpenZeppelin Upgrades Plugins `</a>` to deploy the contract. The contract is deployed using the `deployProxy` method. This method deploys a proxy contract which points to the implementation contract. The implementation contract is the `WunderToken` contract. To upgrade the contract, a new implementation contract is deployed and the proxy contract is updated to point to the new implementation contract using the `upgradeProxy` method.
 
-A sample upgrade script can be found `<a href='./scripts/2.upgrade-wunderTokenV2.ts'>`here`</a>`. Update the proxy address and run using the following command:
+A sample upgrade script can be found `<a href='./scripts/2.upgrade-wunderTokenV2.ts'>`here `</a>`. Update the proxy address and run using the following command:
 
 ```bash
 npx hardhat run scripts/2.upgrade-wunderTokenV2.ts --network <<network>>
