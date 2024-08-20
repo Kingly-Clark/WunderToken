@@ -106,13 +106,9 @@ const config: HardhatUserConfig = {
     },
     arbitrum: {
       url: process.env.ARBITRUM_RPC_URL,
-      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      // accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 10e6,
-      /* The line `// accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],` is a commented-out
-      line in the Hardhat configuration file. In TypeScript, the `??` operator is the nullish
-      coalescing operator, which returns the right-hand operand if the left-hand operand is `null`
-      or `undefined`, otherwise it returns the left-hand operand. */
-      // ledgerAccounts: [DEPLOYER_WALLET],
+      ledgerAccounts: [DEPLOYER_WALLET],
     },
     ganache: {
       url: "http://127.0.0.1:7545",

@@ -1,7 +1,7 @@
 // scripts/2.upgradeV2.ts
 import { ethers, upgrades } from "hardhat"
 
-const proxyAddress = "0xA201D1aB2264c19893Ebe489280c1456a8B29EB6"
+const proxyAddress = "0x58be876955484309706dFd5Fbccdf6D470666774"
 
 async function main() {
   const signers = await ethers.getSigners()

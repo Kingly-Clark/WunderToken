@@ -151,7 +151,7 @@ contract WunderTokenV1 is
   /// @notice Initializes the contract with the `DEFAULT_ADMIN_ROLE` granted to the `defaultAdmin` address.
   /// @param defaultAdmin The address that will be granted the `DEFAULT_ADMIN_ROLE`.
   function initialize(address defaultAdmin) public initializer {
-    __ERC20_init("Wunderpar", "WUNDER");
+    __ERC20_init("Wunderfan", "WUNDERFAN");
     __ERC20Burnable_init();
     __ERC20Pausable_init();
     __AccessControl_init();
