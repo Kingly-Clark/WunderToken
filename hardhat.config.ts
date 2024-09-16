@@ -13,7 +13,7 @@ dotenv.config()
 const WUNDERPAR_DEPLOYER_WALLET = "0x5f73be3809D89e13257877Aa8c47157c3765d081"
 const WUNDERFAN_DEPLOYER_WALLET = "0xB5a8A434912Ac6ff9Fa1b3C99fDC8Af5789b06b8"
 
-const DEPLOYER_WALLET = WUNDERFAN_DEPLOYER_WALLET
+const DEPLOYER_WALLET = WUNDERPAR_DEPLOYER_WALLET
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -94,9 +94,9 @@ const config: HardhatUserConfig = {
     },
     polygon: {
       url: process.env.POLYGON_NODE,
-      accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
+      // accounts: [process.env.WUNDERPAR_DEPLOYER_PRIVATE_KEY ?? ""],
       gasPrice: 45e9,
-      // ledgerAccounts: [DEPLOYER_WALLET],
+      ledgerAccounts: [DEPLOYER_WALLET],
     },
     arbitrumSepolia: {
       url: process.env.ARBITRUM_SEPOLIA_RPC_URL,

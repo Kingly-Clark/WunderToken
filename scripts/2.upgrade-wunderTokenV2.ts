@@ -1,11 +1,12 @@
 // scripts/2.upgradeV2.ts
 import { ethers, upgrades } from "hardhat"
 
-const proxyAddress = "0x58be876955484309706dFd5Fbccdf6D470666774"
+const proxyAddress = "0x28eBFAF629A858D83550B4B8292C7995aF2E32aa"
 
 async function main() {
   const signers = await ethers.getSigners()
   const signer = signers[0]
+  console.log({ signer })
   const WunderTokenV1 = await ethers.getContractFactory("WunderTokenV1")
   const wunderTokenV1 = WunderTokenV1.attach(proxyAddress)
   const UPGRADER_ROLE = await wunderTokenV1.UPGRADER_ROLE()
