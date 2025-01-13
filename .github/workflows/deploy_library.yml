@@ -15,14 +15,6 @@ jobs:
       fullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}
 
     steps:
-      - name: Ensure ProGet NuGet Source
-        run: |
-          dotnet nuget add source ${{ vars.INMO_CICD_NUGET_FEED }} \
-            -n kc \
-            -u ${{ secrets.INMO_CICD_PROGET_USER }} \
-            -p ${{ secrets.INMO_CICD_PROGET_PASS }} \
-            --store-password-in-clear-text
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -51,9 +43,4 @@ jobs:
 
       - name: Run './build.cmd Install Generator'
         run: |
-          ./build.cmd InstallGenerator \
-            --helm-feed ${{ vars.INMO_CICD_HELM_FEED }} \
-            --nuget-feed ${{ vars.INMO_CICD_NUGET_FEED }} \
-            --pro-get-credentials ${{ secrets.PROGET_USER }}:${{ secrets.PROGET_PASSWORD }} \
-            --pro-get-username ${{ secrets.PROGET_USER }} \
-            --pro-get-password ${{ secrets.PROGET_PASSWORD }}
+          ./build.cmd InstallGenerator

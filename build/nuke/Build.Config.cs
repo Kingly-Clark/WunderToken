@@ -22,19 +22,4 @@ partial class Build
     //------------------------------------------------------------------------------------------------------------------
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion] readonly GitVersion GitVersion;
-
-    // FEEDS
-    //------------------------------------------------------------------------------------------------------------------
-    [Parameter("KC NuGet Feed")]
-    string NuGetFeed = "https://proget-kc.azurewebsites.net/nuget/nuget/v3/index.json";
-
-    [Parameter("ProGet Credentials, eg. username:password")]
-    string ProGetCredentials = Environment.GetEnvironmentVariable("PROGET_CREDENTIALS");
-
-    [Parameter("ProGet Username")]
-    string ProGetUsername = Environment.GetEnvironmentVariable("PROGET_USER");
-
-    [Parameter("ProGet Password")]
-    string ProGetPassword = Environment.GetEnvironmentVariable("PROGET_PASSWORD");
-
 }
