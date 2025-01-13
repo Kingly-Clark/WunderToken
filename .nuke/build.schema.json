@@ -12,18 +12,6 @@
     "NuGetFeed": {
       "type": "string",
       "description": "KC NuGet Feed"
-    },
-    "ProGetCredentials": {
-      "type": "string",
-      "description": "ProGet Credentials, eg. username:password"
-    },
-    "ProGetPassword": {
-      "type": "string",
-      "description": "ProGet Password"
-    },
-    "ProGetUsername": {
-      "type": "string",
-      "description": "ProGet Username"
     }
   },
   "definitions": {

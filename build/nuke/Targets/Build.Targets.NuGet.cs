@@ -10,26 +10,25 @@ partial class Build
 {
     async Task PackNuGetImplementation()
     {
-        // DotNetPack(s => s
-        //     .SetProject(OpenApiClientProjectPath)
-        //     .SetConfiguration(Configuration)
-        //     .SetOutputDirectory(NuGetArtifactsDirectory)
-        //     .SetVersion(GitVersion.FullSemVer)
-        //     //.EnableNoBuild()
-        //     .EnableIncludeSymbols()
-        // );
+        DotNetPack(s => s
+            .SetProject(MainProjectPath)
+            .SetConfiguration(Configuration)
+            .SetOutputDirectory(NuGetArtifactsDirectory)
+            .SetVersion(GitVersion.FullSemVer)
+            .EnableIncludeSymbols()
+        );
     }
 
     async Task PushNuGetImplementation()
     {
-        // Log.Information("Pushing NuGet");
-        // foreach (var file in NuGetArtifactsDirectory.GlobFiles("*.symbols.nupkg"))
-        // {
-        //     Log.Information("Pushing {0}", file);
-        //     DotNetNuGetPush(s => s
-        //         .SetSource(NuGetFeed)
-        //         .SetTargetPath(file)
-        //     );
-        // }
+        Log.Information("Pushing NuGet");
+        foreach (var file in NuGetArtifactsDirectory.GlobFiles("*.symbols.nupkg"))
+        {
+            Log.Information("Pushing {0}", file);
+            DotNetNuGetPush(s => s
+                .SetSource(NuGetFeed)
+                .SetTargetPath(file)
+            );
+        }
     }
 }

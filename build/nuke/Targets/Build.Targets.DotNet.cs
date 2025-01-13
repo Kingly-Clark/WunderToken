@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
+using System;
 using System.Threading.Tasks;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
@@ -11,34 +12,26 @@ partial class Build
 {
     async Task TargetCleanImplementation()
     {
-        // SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-        // EnsureCleanDirectory(ArtifactsDirectory);
+        SourceDirectory.GlobDirectories($"**/{MainProjectName}").ForEach(x => x.DeleteDirectory());
+        SourceDirectory.GlobFiles("*.sln").ForEach(x => x.DeleteFile());
+        ArtifactsDirectory.CreateOrCleanDirectory();
     }
 
     async Task TargetRestoreImplementation()
     {
-        // DotNetToolRestore();
-        // DotNetRestore(s => s
-        //     .SetProjectFile(Solution));
+        DotNetToolRestore();
+        DotNetRestore(s => s
+            .SetProjectFile(MainProjectPath));
     }
 
     async Task TargetCompileImplementation()
     {
-        // DotNetBuild(s => s
-        //     .SetProjectFile(Solution)
-        //     .SetConfiguration(Configuration)
-        //     .SetAssemblyVersion(GitVersion.AssemblySemVer)
-        //     .SetFileVersion(GitVersion.AssemblySemFileVer)
-        //     .SetInformationalVersion(GitVersion.InformationalVersion)
-        //     .EnableNoRestore());
-    }
-
-    async Task PublishImplementation()
-    {
-        // DotNetPublish(s => s
-        //     .SetProject(MainProject)
-        //     //.SetVersion(GitVersion.FullSemVer)
-        //     .SetOutput(BinaryArtifactsDirectory)
-        // );
+        DotNetBuild(s => s
+            .SetProjectFile(MainProjectPath)
+            .SetConfiguration(Configuration)
+            .SetAssemblyVersion(GitVersion.AssemblySemVer)
+            .SetFileVersion(GitVersion.AssemblySemFileVer)
+            .SetInformationalVersion(GitVersion.InformationalVersion)
+            .EnableNoRestore());
     }
 }

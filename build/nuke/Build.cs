@@ -25,19 +25,20 @@ partial class Build : NukeBuild
         .Before(Restore)
         .Executes(TargetCleanImplementation);
 
-    Target Restore => _ => _
-        .Executes(TargetRestoreImplementation);
-
     Target InstallGenerator => _ => _
-        .DependsOn(Restore)
-        .Executes(InstallNetheruemGeneratorImplementation);
+        .Before(Restore)
+        .DependsOn(Clean)
+        .Executes(GenerateNetheriumProject);
+
+    Target Restore => _ => _
+        .DependsOn(InstallGenerator)
+        .Executes(TargetRestoreImplementation);
 
     Target Compile => _ => _
         .DependsOn(Restore)
         .Executes(TargetCompileImplementation);
 
     Target PackNuGet => _ => _
-        .DependsOn(InstallGenerator)
         .DependsOn(Compile)
         .Executes(PackNuGetImplementation);
 
