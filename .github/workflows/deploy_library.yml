@@ -33,6 +33,10 @@ jobs:
       - name: Set Version in Action Summary
         run: echo '### Semantic Version - ${{ steps.gitversion.outputs.fullSemVer }} ' >> $GITHUB_STEP_SUMMARY
 
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
       - name: Cache .nuke/temp, ~/.nuget/packages
         uses: actions/cache@v3
         with:
